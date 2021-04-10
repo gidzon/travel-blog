@@ -1,0 +1,14 @@
+{
+    "require": {
+        "slim/slim": "4.*",
+        "nyholm/psr7": "^1.3",
+        "nyholm/psr7-server": "^1.0",
+        "twig/twig": "^3.0",
+        "zeuxisoo/slim-whoops": "0.7.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        }
+    }
+}

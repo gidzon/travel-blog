@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home is twig</title>
+</head>
+<body>
+    <ul>
+        {% for category in categories %}
+            <li><a href="{{ category.id }}" >{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
+    {% if articles is empty %}
+        <p>not data</p>
+    {% else %}
+        {% for article in articles %}
+            <p>{{ article.title }}</p>
+            <p>{{ article.content }}</p>
+            <a href="show/{{ article.id }}">читать далее</a>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
