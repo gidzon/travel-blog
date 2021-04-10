@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin dashboard</title>
+    <link rel="stylesheet" href="../../public/css/main.css">
+</head>
+<body>
+<header>
+    <div class="search">
+        <form action="search" method="post">
+            <input type="text" name="search" id="">
+            <input type="submit" value="Поиск">
+        </form>
+    </div>
+</header>
+<aside>
+    <div class="navigation">
+        <ul>
+            <li><button>Категории</button></li>
+            <li><button>Пользователи</button></li>
+            <li><button>Коментарии</button></li>
+            <li><button>Статьи</button></li>
+        </ul>
+    </div>
+</aside>
+
+<div class="categories_dashboard">
+    <button id="btn-category">Добавить категорию</button>
+    <form action="" method="post" name="category" class="hidden">
+        <input type="text"  id="" placeholder="название категории">
+        <input type="submit" id="">
+    </form>
+    {% if categories is empty %}
+        <p>Нет категорий</p>
+    {% else %}
+        <table id="table-category">
+            <tr>
+                <td>ID</td>
+                <td>Категория</td>
+                <td>Удаление</td>
+                <td>Редактирование</td>
+                <td>Добавить</td>
+            </tr>
+            {% for category in categories %}
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td>{{ category.name }}</td>
+                    <td><button id="category-delete" data-id="{{ category.id }}">удалить</button></td>
+                    <td><button id="category-update" data-id="{{ category.id }}">редактировать</button></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</div>
+<div class="users_dashboard">
+    {% if users is empty %}
+        <p>Нет пользователей</p>
+    {% else %}
+        <table>
+            <tr>
+                <td>ID</td>
+                <td>Имя</td>
+                <td>Фамилия</td>
+                <td>email</td>
+                <td>Дейсвтие</td>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.surname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td><button id="user-block" data-id="{{ category.id }}">блокировать</button></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</div>
+<div class="comentes_dashboard">
+    {% if users is empty %}
+    <p>Нет коментариев</p>
+{% else %}
+    <table>
+        <tr>
+            <td>ID</td>
+            <td>Коментарий</td>
+            <td>Действие</td>
+        </tr>
+        {% for coment in comentes %}
+            <tr>
+                <td>{{ coment.id }}</td>
+                <td>{{ coment.coment }}</td>
+                <td><button id="coment-block" data-id="{{ coment.id }}">блокировать</button></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+</div>
+<div class="articles_dashboard">
+    {% if users is empty %}
+    <p>Нет статьей</p>
+{% else %}
+    <table>
+        <tr>
+            <td>ID</td>
+            <td>Заголовок</td>
+            <td>Контент</td>
+            <td>Действие</td>
+        </tr>
+        {% for article in articles %}
+            <tr>
+                <td>{{ article.id }}</td>
+                <td>{{ article.content }}</td>
+                <td><button id="article-delete" data-id="{{ article.id }}">удалить</button></td>
+                <td><button id="article-update" data-id="{{ article.id }}">изменить</button></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <form action="" method="post" name="article-update">
+        <input type="text" name="title" id="">
+        <input type="text" name="content" id="">
+        <input type="submit" value="отправить">
+    </form>
+{% endif %}
+</div>
+<script src="../../public/js/main.js"></script>
+
+</body>
+</html>
