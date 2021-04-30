@@ -32,10 +32,9 @@ class CategoryController
 
         $contents = json_decode(file_get_contents('php://input'), true);
         if (isset($contents['id'])){
-            $keys = array_keys($contents);
-            $values = array_values($contents);
-
-            $this->queryBuilder->update('categories', $values, $keys, $this->database);
+            $idProduct = array_pop($contents);
+            $whereProduct = ['id' => $idProduct];
+            $this->queryBuilder->update('categories', $contents, $whereProduct, $this->database);
         } else {
             $this->queryBuilder->insert('categories', $contents, $this->database);
         }
