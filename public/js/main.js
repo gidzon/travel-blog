@@ -82,7 +82,7 @@ formCategory.addEventListener('submit', async function(e){
         dataCategory.id = category.id.value
     }
 
-    await sendPostForm('/admin/dashboard/category/store', dataCategory)
+    sendPostForm('/admin/dashboard/category/store', dataCategory)
     formCategory.classList.add('hidden')
 })
 
