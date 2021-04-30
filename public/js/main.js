@@ -41,6 +41,23 @@ function insertValueInDom(data) {
 }
 
 
+function addEventElements(elem) {
+    for (const tbodyElement of elem) {
+        let btnCategoryUpdate = tbodyElement.cells[3].childNodes[0]
+        btnCategoryUpdate.addEventListener('click', async function() {
+            document.forms.category.classList.remove('hidden')
+            let id = btnCategoryUpdate.dataset.id
+            let  inputHidden = document.createElement('input')
+            inputHidden.type = "hidden"
+            inputHidden.value = id
+            inputHidden.name = 'id'
+            document.forms.category.append(inputHidden)
+            let input = document.forms.category[0]
+            let dataForm = await getDataFetch('/admin/dashboard/categories/' + id)
+            input.value = dataForm.name
+        });
+    }
+}
 async function sendPostForm(url, body) {
     let response = await fetch(url, {
         method: "POST",
@@ -50,11 +67,13 @@ async function sendPostForm(url, body) {
         body: JSON.stringify(body)
     });
     let result = await response.json()
-    formCategory.lastChild.remove()
     await deleteElem(document.querySelector('#category_data'))
 
-     insertValueInDom(result)
-
+   await  insertValueInDom(result)
+    addEventElements(tbody.rows)
+    if (document.forms.category.length > 2) {
+        document.forms.category.lastChild.remove()
+    }
 }
 
 
@@ -87,19 +106,4 @@ formCategory.addEventListener('submit', async function(e){
 })
 
 
-
-for (const tbodyElement of tbody.rows) {
-   let btnCategoryUpdate = tbodyElement.cells[3].childNodes[0]
-    btnCategoryUpdate.addEventListener('click', async function() {
-       formCategory.classList.remove('hidden')
-       let id = btnCategoryUpdate.dataset.id
-      let  inputHidden = document.createElement('input')
-        inputHidden.type = "hidden"
-        inputHidden.value = id
-        inputHidden.name = 'id'
-        formCategory.append(inputHidden)
-       let input = formCategory[0]
-       let dataForm = await getDataFetch('/admin/dashboard/categories/' + id)
-       input.value = dataForm.name
-    });
-}
+addEventElements(tbody.rows)
