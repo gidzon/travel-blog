@@ -41,7 +41,7 @@ function insertValueInDom(data) {
 }
 
 
-function addEventElements(elem) {
+function addEventCategoryElements(elem) {
     for (const tbodyElement of elem) {
         let btnCategoryUpdate = tbodyElement.cells[3].childNodes[0]
         btnCategoryUpdate.addEventListener('click', async function() {
@@ -66,17 +66,18 @@ async function sendPostForm(url, body) {
         },
         body: JSON.stringify(body)
     });
-    let result = await response.json()
+    return  await response.json()
+}
+
+async function changeTableCategory(category) {
     await deleteElem(document.querySelector('#category_data'))
 
-   await  insertValueInDom(result)
-    addEventElements(tbody.rows)
+    await  insertValueInDom(category)
+    addEventCategoryElements(tbody.rows)
     if (document.forms.category.length > 2) {
         document.forms.category.lastChild.remove()
     }
 }
-
-
 async function getDataFetch(url) {
     let response = await fetch(url);
     if (response.ok && response.headers.get('Content-Type') == 'application/json') {
@@ -101,9 +102,10 @@ formCategory.addEventListener('submit', async function(e){
         dataCategory.id = category.id.value
     }
 
-    sendPostForm('/admin/dashboard/category/store', dataCategory)
+   let categories = await sendPostForm('/admin/dashboard/category/store', dataCategory)
     formCategory.classList.add('hidden')
+    changeTableCategory(categories)
 })
 
 
-addEventElements(tbody.rows)
+addEventCategoryElements(tbody.rows)
