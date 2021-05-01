@@ -68,3 +68,10 @@ $database, $queryBuilder){
     
     return $AdminDashboardController->getData($request, $response, $args);
 });
+
+$app->get('/admin/dashboard/category/delete/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) use ($twig,
+    $database, $queryBuilder){
+    $AdminDashboardController = new CategoryController($twig, $database, $queryBuilder);
+
+    return $AdminDashboardController->delete($request, $response, $args);
+});

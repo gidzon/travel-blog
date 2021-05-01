@@ -44,9 +44,15 @@ function insertValueInDom(data) {
 function addEventCategoryElements(elem) {
     for (const tbodyElement of elem) {
         let btnCategoryUpdate = tbodyElement.cells[3].childNodes[0]
+        let btnCategoryDelete = tbodyElement.cells[2].childNodes[0]
+        let id = btnCategoryUpdate.dataset.id
+        btnCategoryDelete.addEventListener('click', async () => {
+           let categories = await getDataFetch(`/admin/dashboard/category/delete/${id}`)
+            changeTableCategory(categories)
+        })
         btnCategoryUpdate.addEventListener('click', async function() {
             document.forms.category.classList.remove('hidden')
-            let id = btnCategoryUpdate.dataset.id
+
             let  inputHidden = document.createElement('input')
             inputHidden.type = "hidden"
             inputHidden.value = id

@@ -60,4 +60,14 @@ class CategoryController
         $response->getBody()->write($data);
         return $response->withHeader('Content-Type', 'application/json');
     }
+
+    public function delete(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    {
+        $this->queryBuilder->delete('categories', ['id' => $args['id']], $this->database);
+        $categories = $this->queryBuilder->select('categories', [], $this->database);
+        $data = json_encode($categories);
+        $response->getBody()->write($data);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
 }
