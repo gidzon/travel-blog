@@ -75,3 +75,10 @@ $app->get('/admin/dashboard/category/delete/{id}', function (ServerRequestInterf
 
     return $AdminDashboardController->delete($request, $response, $args);
 });
+
+$app->post('/admin/dashboard/article', function (ServerRequestInterface $request, ResponseInterface $response, array $args) use ($twig,
+    $database, $queryBuilder){
+    $AdminDashboardController = new ArticlesController($twig, $database, $queryBuilder);
+
+    return $AdminDashboardController->save($request, $response, $args);
+});

@@ -48,4 +48,14 @@ class ArticlesController
         $response->getBody()->write($template);
         return $response;
     }
+
+    public function save(ServerRequestInterface $request, ResponseInterface $response, array $arrgs): ResponseInterface
+    {
+
+        $test = $this->queryBuilder->insert('articles', $request->getParsedBody(),$this->database);
+        $articles = $this->queryBuilder->select('articles', [], $this->database);
+        $dataJsonArticles = json_encode($articles);
+        $response->getBody()->write($dataJsonArticles);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
 }

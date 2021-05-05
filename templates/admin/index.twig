@@ -92,31 +92,44 @@
 {% endif %}
 </div>
 <div class="articles_dashboard">
+    <form action="" method="post" name="article" class="form_update">
+        <input type="text" name="title" id="article_tile" placeholder="заголовок">
+        <input type="text" name="id_category" id="id_category" placeholder="id категории">
+        <textarea name="subcontent" id="subcontent" cols="30" rows="10" placeholder="отрывок статьи"></textarea>
+        <textarea name="content" id="content" cols="30" rows="10" placeholder="текст статьи"></textarea>
+        <div class="btnSend">
+            <input type="submit" value="отправить">
+        </div>
+
+    </form>
     {% if articles is empty %}
-    <p>Нет статьей</p>
+    <p id="not_articles">Нет статьей</p>
 {% else %}
-    <table>
+    <table id="show_articles">
+        <thead>
         <tr>
             <td>ID</td>
             <td>Заголовок</td>
-            <td>Контент</td>
-            <td>Действие</td>
+            <td>Отрывок</td>
+            <td>Удалить</td>
+            <td>Редактировать</td>
         </tr>
+        </thead>
+        <tbody id="tbarticles">
         {% for article in articles %}
             <tr>
                 <td>{{ article.id }}</td>
-                <td>{{ article.content }}</td>
+                <td>{{ article.title }}</td>
+                <td>{{ article.subcontent }}</td>
                 <td><button id="article-delete" data-id="{{ article.id }}">удалить</button></td>
                 <td><button id="article-update" data-id="{{ article.id }}">изменить</button></td>
             </tr>
         {% endfor %}
+        </tbody>
     </table>
-    <form action="" method="post" name="article-update">
-        <input type="text" name="title" id="">
-        <input type="text" name="content" id="">
-        <input type="submit" value="отправить">
-    </form>
-{% endif %}
+    {% endif %}
+
+
 </div>
 <script src="../../public/js/main.js"></script>
 

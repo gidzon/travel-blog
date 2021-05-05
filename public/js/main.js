@@ -1,3 +1,4 @@
+// управление категориями
 let btnCategory = document.querySelector('#btn-category')
 let formCategory = document.forms.category;
 const tbody = document.querySelector('#category_data');
@@ -115,3 +116,106 @@ formCategory.addEventListener('submit', async function(e){
 
 
 addEventCategoryElements(tbody.rows)
+
+//управление статьями
+
+function createTdTable(parent, data) {
+    data.forEach(function (item, i, arr){
+        let td = document.createElement('td')
+        td.innerText = item.id
+        parent.append(td)
+        td = document.createElement('td')
+        td.innerText = item.title
+        parent.append(td)
+        td = document.createElement('td')
+        td.innerText = item.subcontent
+        parent.append(td)
+
+        let btnDelete = `<button id='article-delete' data-id='${item.id}'>удалить</button>`
+        td = document.createElement('td')
+        td.innerHTML = btnDelete
+        parent.append(td)
+
+        let btnUpdate = `<button id='article-update' data-id='${item.id}'>изменить</button>`
+        td = document.createElement('td')
+        td.innerHTML = btnUpdate
+        parent.append(td)
+    })
+}
+
+function createColTable(parent, data) {
+    let td = document.createElement('td')
+    td.innerText = data.id
+    parent.append(td)
+    td = document.createElement('td')
+    td.innerText = data.title
+    parent.append(td)
+    td = document.createElement('td')
+    td.innerText = data.subcontent
+    parent.append(td)
+
+    let btnDelete = `<button id='article-delete' data-id='${data.id}'>удалить</button>`
+    td = document.createElement('td')
+    td.innerHTML = btnDelete
+    parent.append(td)
+
+    let btnUpdate = `<button id='article-update' data-id='${data.id}'>изменить</button>`
+    td = document.createElement('td')
+    td.innerHTML = btnUpdate
+    parent.append(td)
+}
+document.forms.article.addEventListener('submit', async e => {
+    e.preventDefault()
+   let response = await fetch('/admin/dashboard/article', {
+        method: 'POST',
+        body: new FormData(document.article)
+    });
+    let articles = await response.json()
+
+    let dashboardArticle = document.querySelector('.articles_dashboard')
+    if(document.querySelector('#show_articles') == null) {
+        document.querySelector('#not_articles').remove()
+        let table = document.createElement('table')
+        table.id = 'show_articles'
+        dashboardArticle.append(table)
+        table = document.querySelector('#show_articles')
+        let thead = document.createElement('thead')
+        table.append(thead)
+        thead.append(document.createElement('tr'))
+
+        thead.lastElementChild.append(document.createElement('td'))
+        thead.lastElementChild.lastElementChild.innerText = 'ID'
+        thead.lastElementChild.append(document.createElement('td'))
+        thead.lastElementChild.lastElementChild.innerText = 'Заголовок'
+        thead.lastElementChild.append(document.createElement('td'))
+        thead.lastElementChild.lastElementChild.innerText = 'Отрывок'
+        thead.lastElementChild.append(document.createElement('td'))
+        thead.lastElementChild.lastElementChild.innerText = 'Действие'
+
+
+        table = document.querySelector('#show_articles')
+        let tbody = document.createElement('tbody')
+        tbody.id = 'tbarticles'
+        table.append(tbody)
+        tbody.append(document.createElement('tr'))
+        let tr = tbody.lastElementChild
+
+
+        createTdTable(tr, articles)
+
+    } else {
+
+        let tbody = document.querySelector(`#tbarticles`)
+        deleteElem(tbody)
+        let tr;
+        for (let i = 0; i < articles.length; i++){
+            tbody.append(document.createElement('tr'))
+
+            tr = tbody.lastElementChild
+            createColTable(tr, articles[i])
+        }
+
+
+
+    }
+})
