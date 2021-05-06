@@ -171,7 +171,10 @@ document.forms.article.addEventListener('submit', async e => {
         body: new FormData(document.article)
     });
     let articles = await response.json()
-
+    document.forms.article.title.value = ''
+    document.forms.article.id_category.value = ''
+    document.forms.article.subcontent.value = ''
+    document.forms.article.content.value = ''
     let dashboardArticle = document.querySelector('.articles_dashboard')
     if(document.querySelector('#show_articles') == null) {
         document.querySelector('#not_articles').remove()
