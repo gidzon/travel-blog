@@ -82,3 +82,17 @@ $app->post('/admin/dashboard/article', function (ServerRequestInterface $request
 
     return $AdminDashboardController->save($request, $response, $args);
 });
+
+$app->get('/admin/dashboard/article/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) use ($twig,
+    $database, $queryBuilder){
+    $articlesController = new ArticlesController($twig, $database, $queryBuilder);
+
+    return $articlesController->getData($request, $response, $args);
+});
+
+$app->post('/admin/dashboard/article/update/', function (ServerRequestInterface $request, ResponseInterface $response, array $args) use ($twig,
+    $database, $queryBuilder){
+    $articlesController = new ArticlesController($twig, $database, $queryBuilder);
+
+    return $articlesController->update($request, $response);
+});

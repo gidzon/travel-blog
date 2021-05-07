@@ -52,8 +52,16 @@ class ArticlesController
     public function save(ServerRequestInterface $request, ResponseInterface $response, array $arrgs): ResponseInterface
     {
 
-        $test = $this->queryBuilder->insert('articles', $request->getParsedBody(),$this->database);
+        $this->queryBuilder->insert('articles', $request->getParsedBody(),$this->database);
         $articles = $this->queryBuilder->select('articles', [], $this->database);
+        $dataJsonArticles = json_encode($articles);
+        $response->getBody()->write($dataJsonArticles);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
+    public function getData(ServerRequestInterface $request, ResponseInterface $response, array $arrgs): ResponseInterface
+    {
+        $articles = $this->queryBuilder->select('articles', $arrgs, $this->database);
         $dataJsonArticles = json_encode($articles);
         $response->getBody()->write($dataJsonArticles);
         return $response->withHeader('Content-Type', 'application/json');

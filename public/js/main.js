@@ -164,6 +164,17 @@ function createColTable(parent, data) {
     td.innerHTML = btnUpdate
     parent.append(td)
 }
+function addEventUpdateArticles(elem, numElem) {
+    for (let articlesRowElement of elem) {
+        articlesRowElement.childNodes[numElem].lastChild
+            .addEventListener('click', async event => {
+                let id = event.path[0].dataset.id
+                let article = await getDataFetch(`/admin/dashboard/article/${id}`)
+
+
+            });
+    }
+}
 document.forms.article.addEventListener('submit', async e => {
     e.preventDefault()
    let response = await fetch('/admin/dashboard/article', {
@@ -204,8 +215,9 @@ document.forms.article.addEventListener('submit', async e => {
         let tr = tbody.lastElementChild
 
 
-        createTdTable(tr, articles)
-
+        await createTdTable(tr, articles)
+        let articlesRow = document.querySelector('#tbarticles').rows
+        addEventUpdateArticles(articlesRow, 4)
     } else {
 
         let tbody = document.querySelector(`#tbarticles`)
@@ -217,8 +229,11 @@ document.forms.article.addEventListener('submit', async e => {
             tr = tbody.lastElementChild
             createColTable(tr, articles[i])
         }
-
-
-
+        let articlesRow = document.querySelector('#tbarticles').rows
+        addEventUpdateArticles(articlesRow, 4)
     }
 })
+
+const articlesRow = document.querySelector('#tbarticles').rows
+addEventUpdateArticles(articlesRow, 9)
+
