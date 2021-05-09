@@ -51,8 +51,15 @@ class ArticlesController
 
     public function save(ServerRequestInterface $request, ResponseInterface $response, array $arrgs): ResponseInterface
     {
+        $content = $request->getParsedBody();
+        if (isset($content['id'])) {
+            $idProduct = array_pop($content);
+            $whereProduct = ['id' => $idProduct];
+            $this->queryBuilder->update('articles', $content, $whereProduct, $this->database);
+        } else {
+            $this->queryBuilder->insert('articles', $content,$this->database);
+        }
 
-        $this->queryBuilder->insert('articles', $request->getParsedBody(),$this->database);
         $articles = $this->queryBuilder->select('articles', [], $this->database);
         $dataJsonArticles = json_encode($articles);
         $response->getBody()->write($dataJsonArticles);

@@ -170,8 +170,16 @@ function addEventUpdateArticles(elem, numElem) {
             .addEventListener('click', async event => {
                 let id = event.path[0].dataset.id
                 let article = await getDataFetch(`/admin/dashboard/article/${id}`)
-
-
+                const forms = document.forms[1]
+                forms.elements[0].value = article[0].title
+                forms.elements[1].value = article[0].id_category
+                forms.elements[2].value = article[0].subcontent
+                forms.elements[3].value = article[0].content
+                let  inputHidden = document.createElement('input')
+                inputHidden.type = "hidden"
+                inputHidden.value = id
+                inputHidden.name = 'id'
+                forms.append(inputHidden)
             });
     }
 }
@@ -182,6 +190,10 @@ document.forms.article.addEventListener('submit', async e => {
         body: new FormData(document.article)
     });
     let articles = await response.json()
+    if (document.forms[1].length == 6) {
+        document.forms[1].elements.id.remove()
+    }
+
     document.forms.article.title.value = ''
     document.forms.article.id_category.value = ''
     document.forms.article.subcontent.value = ''
