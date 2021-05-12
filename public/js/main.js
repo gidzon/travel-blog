@@ -119,28 +119,113 @@ addEventCategoryElements(tbody.rows)
 
 //управление статьями
 
-function createTdTable(parent, data) {
-    data.forEach(function (item, i, arr){
-        let td = document.createElement('td')
-        td.innerText = item.id
-        parent.append(td)
-        td = document.createElement('td')
-        td.innerText = item.title
-        parent.append(td)
-        td = document.createElement('td')
-        td.innerText = item.subcontent
-        parent.append(td)
+class Article {
+    constructor(tbody,data, numElem) {
+        this.tbody = tbody
+        this.data = data
+        this.numElem = numElem
+    }
 
-        let btnDelete = `<button id='article-delete' data-id='${item.id}'>удалить</button>`
-        td = document.createElement('td')
-        td.innerHTML = btnDelete
-        parent.append(td)
+    addEventDeleteArticles(parent, numElem) {
 
-        let btnUpdate = `<button id='article-update' data-id='${item.id}'>изменить</button>`
-        td = document.createElement('td')
-        td.innerHTML = btnUpdate
-        parent.append(td)
-    })
+        for (let parentElement of parent) {
+            parentElement.childNodes[numElem].lastChild.addEventListener('click', async event => {
+                let id = event.path[0].dataset.id
+                let response = await getDataFetch(`/admin/dashboard/article/delete/${id}`)
+                this.data = response
+                this.changeTable()
+            })
+        }
+    }
+
+    changeTable() {
+        this.deleteElem()
+        if (this.data.length < 0) {
+
+        }
+        this.createRowTable()
+    }
+
+    deleteElem(){
+        let size = this.tbody.childElementCount
+
+        for (let i = 0; i < size; i++){
+            this.tbody.firstElementChild.remove()
+        }
+    }
+
+    createTdTable(tr) {
+        this.data.forEach(function (item, i, arr){
+            let td = document.createElement('td')
+            td.innerText = item.id
+            tr.append(td)
+            td = document.createElement('td')
+            td.innerText = item.title
+            tr.append(td)
+            td = document.createElement('td')
+            td.innerText = item.subcontent
+            tr.append(td)
+
+            let btnDelete = `<button id='article-delete' data-id='${item.id}'>удалить</button>`
+            td = document.createElement('td')
+            td.innerHTML = btnDelete
+            tr.append(td)
+
+            let btnUpdate = `<button id='article-update' data-id='${item.id}'>изменить</button>`
+            td = document.createElement('td')
+            td.innerHTML = btnUpdate
+            tr.append(td)
+        })
+    }
+
+    createRowTable() {
+        for (let i = 0; i < this.data.length; i++){
+            let tr = document.createElement('tr')
+            this.tbody.append(tr)
+
+            let td = document.createElement('td')
+            td.innerText = this.data.id
+            this.tbody.lastElementChild.append(td)
+            td = document.createElement('td')
+            td.innerText = this.data.title
+            this.tbody.lastElementChild.append(td)
+            td = document.createElement('td')
+            td.innerText = this.data.subcontent
+            this.tbody.lastElementChild.append(td)
+
+            let btnDelete = `<button id='article-delete' data-id='${this.data.id}'>удалить</button>`
+            td = document.createElement('td')
+            td.innerHTML = btnDelete
+            this.tbody.lastElementChild.append(td)
+
+            let btnUpdate = `<button id='article-update' data-id='${this.data.id}'>изменить</button>`
+            td = document.createElement('td')
+            td.innerHTML = btnUpdate
+            this.tbody.lastElementChild.append(td)
+        }
+
+    }
+
+
+    addEventUpdateArticles(parent) {
+        for (let articlesRowElement of parent) {
+            articlesRowElement.childNodes[this.numElem].lastChild
+                .addEventListener('click', async event => {
+                    let id = event.path[0].dataset.id
+                    let article = await getDataFetch(`/admin/dashboard/article/${id}`)
+                    const forms = document.forms[1]
+                    forms.elements[0].value = article[0].title
+                    forms.elements[1].value = article[0].id_category
+                    forms.elements[2].value = article[0].subcontent
+                    forms.elements[3].value = article[0].content
+                    let  inputHidden = document.createElement('input')
+                    inputHidden.type = "hidden"
+                    inputHidden.value = id
+                    inputHidden.name = 'id'
+                    forms.append(inputHidden)
+                });
+        }
+    }
 }
 
 function createColTable(parent, data) {
@@ -227,9 +312,12 @@ document.forms.article.addEventListener('submit', async e => {
         let tr = tbody.lastElementChild
 
 
-        await createTdTable(tr, articles)
+
+        const article = new Article(tbody, articles, 4)
+        article.createTdTable(tr)
         let articlesRow = document.querySelector('#tbarticles').rows
-        addEventUpdateArticles(articlesRow, 4)
+        article.addEventUpdateArticles(articlesRow)
+        article.addEventDeleteArticles(articlesRow, 3)
     } else {
 
         let tbody = document.querySelector(`#tbarticles`)
@@ -246,6 +334,7 @@ document.forms.article.addEventListener('submit', async e => {
     }
 })
 
-const articlesRow = document.querySelector('#tbarticles').rows
-addEventUpdateArticles(articlesRow, 9)
+// const articlesRow = document.querySelector('#tbarticles').rows
+
+// addEventUpdateArticles(articlesRow, 9)
 

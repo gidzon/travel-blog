@@ -89,3 +89,10 @@ $app->get('/admin/dashboard/article/{id}', function (ServerRequestInterface $req
 
     return $articlesController->getData($request, $response, $args);
 });
+
+$app->get('/admin/dashboard/article/delete/{id}', function (ServerRequestInterface $request, ResponseInterface $response, array $args) use ($twig,
+    $database, $queryBuilder){
+    $articlesController = new ArticlesController($twig, $database, $queryBuilder);
+
+    return $articlesController->delete($request, $response, $args);
+});

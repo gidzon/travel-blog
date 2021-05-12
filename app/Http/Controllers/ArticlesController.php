@@ -73,4 +73,15 @@ class ArticlesController
         $response->getBody()->write($dataJsonArticles);
         return $response->withHeader('Content-Type', 'application/json');
     }
+
+    public function delete(ServerRequestInterface $request, ResponseInterface $response, array $arrgs): ResponseInterface
+    {
+        $this->queryBuilder->delete('articles', $arrgs, $this->database);
+
+        $articles = $this->queryBuilder->select('articles', [], $this->database);
+        $dataJsonArticles = json_encode($articles);
+        $response->getBody()->write($dataJsonArticles);
+        return $response->withHeader('Content-Type', 'application/json');
+    }
+
 }
