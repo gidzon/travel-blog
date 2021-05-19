@@ -120,16 +120,16 @@ addEventCategoryElements(tbody.rows)
 //управление статьями
 
 class Article {
-    constructor(tbody,data, numElem) {
+    constructor(tbody,data = null, numElem) {
         this.tbody = tbody
         this.data = data
         this.numElem = numElem
     }
 
-    addEventDeleteArticles(parent, numElem) {
+    addEventDeleteArticles(parent) {
 
         for (let parentElement of parent) {
-            parentElement.childNodes[numElem].lastChild.addEventListener('click', async event => {
+            parentElement.childNodes[this.numElem.delete].lastChild.addEventListener('click', async event => {
                 let id = event.path[0].dataset.id
                 let response = await getDataFetch(`/admin/dashboard/article/delete/${id}`)
                 this.data = response
@@ -139,11 +139,20 @@ class Article {
     }
 
     changeTable() {
-        this.deleteElem()
-        if (this.data.length < 0) {
-
+        document.querySelector('#show_articles').remove()
+        if (this.data.length == 0) {
+            let articlesDasboard = document.querySelector('.articles_dashboard')
+            let paragraf = document.createElement('p')
+            paragraf.id = 'not_articles'
+            paragraf.innerText = 'Нет категорий'
+            articlesDasboard.append(paragraf)
+        } else {
+            articlesDasboard.lastElementChild.remove()
+            this.deleteElem()
+            this.createRowTable()
+            this.addEventDeleteArticles(this.tbody.rows)
+            this.addEventUpdateArticles(this.tbody)
         }
-        this.createRowTable()
     }
 
     deleteElem(){
@@ -184,21 +193,20 @@ class Article {
             this.tbody.append(tr)
 
             let td = document.createElement('td')
-            td.innerText = this.data.id
+            td.innerText = this.data[i].id
             this.tbody.lastElementChild.append(td)
             td = document.createElement('td')
-            td.innerText = this.data.title
+            td.innerText = this.data[i].title
             this.tbody.lastElementChild.append(td)
             td = document.createElement('td')
-            td.innerText = this.data.subcontent
+            td.innerText = this.data[i].subcontent
             this.tbody.lastElementChild.append(td)
-
-            let btnDelete = `<button id='article-delete' data-id='${this.data.id}'>удалить</button>`
+            let btnDelete = `<button id='article-delete' data-id='${this.data[i].id}'>удалить</button>`
             td = document.createElement('td')
             td.innerHTML = btnDelete
             this.tbody.lastElementChild.append(td)
 
-            let btnUpdate = `<button id='article-update' data-id='${this.data.id}'>изменить</button>`
+            let btnUpdate = `<button id='article-update' data-id='${this.data[i].id}'>изменить</button>`
             td = document.createElement('td')
             td.innerHTML = btnUpdate
             this.tbody.lastElementChild.append(td)
@@ -209,15 +217,19 @@ class Article {
 
     addEventUpdateArticles(parent) {
         for (let articlesRowElement of parent) {
-            articlesRowElement.childNodes[this.numElem].lastChild
+            articlesRowElement.childNodes[this.numElem.update].lastChild
                 .addEventListener('click', async event => {
                     let id = event.path[0].dataset.id
-                    let article = await getDataFetch(`/admin/dashboard/article/${id}`)
                     const forms = document.forms[1]
+                    let article = await getDataFetch(`/admin/dashboard/article/${id}`)
                     forms.elements[0].value = article[0].title
                     forms.elements[1].value = article[0].id_category
                     forms.elements[2].value = article[0].subcontent
                     forms.elements[3].value = article[0].content
+
+                    if (forms.length == 6) {
+                        forms.lastElementChild.remove()
+                    }
                     let  inputHidden = document.createElement('input')
                     inputHidden.type = "hidden"
                     inputHidden.value = id
@@ -228,46 +240,6 @@ class Article {
     }
 }
 
-function createColTable(parent, data) {
-    let td = document.createElement('td')
-    td.innerText = data.id
-    parent.append(td)
-    td = document.createElement('td')
-    td.innerText = data.title
-    parent.append(td)
-    td = document.createElement('td')
-    td.innerText = data.subcontent
-    parent.append(td)
-
-    let btnDelete = `<button id='article-delete' data-id='${data.id}'>удалить</button>`
-    td = document.createElement('td')
-    td.innerHTML = btnDelete
-    parent.append(td)
-
-    let btnUpdate = `<button id='article-update' data-id='${data.id}'>изменить</button>`
-    td = document.createElement('td')
-    td.innerHTML = btnUpdate
-    parent.append(td)
-}
-function addEventUpdateArticles(elem, numElem) {
-    for (let articlesRowElement of elem) {
-        articlesRowElement.childNodes[numElem].lastChild
-            .addEventListener('click', async event => {
-                let id = event.path[0].dataset.id
-                let article = await getDataFetch(`/admin/dashboard/article/${id}`)
-                const forms = document.forms[1]
-                forms.elements[0].value = article[0].title
-                forms.elements[1].value = article[0].id_category
-                forms.elements[2].value = article[0].subcontent
-                forms.elements[3].value = article[0].content
-                let  inputHidden = document.createElement('input')
-                inputHidden.type = "hidden"
-                inputHidden.value = id
-                inputHidden.name = 'id'
-                forms.append(inputHidden)
-            });
-    }
-}
 document.forms.article.addEventListener('submit', async e => {
     e.preventDefault()
    let response = await fetch('/admin/dashboard/article', {
@@ -284,6 +256,10 @@ document.forms.article.addEventListener('submit', async e => {
     document.forms.article.subcontent.value = ''
     document.forms.article.content.value = ''
     let dashboardArticle = document.querySelector('.articles_dashboard')
+    let numElementes = {
+        delete: 3,
+        update: 4
+    }
     if(document.querySelector('#show_articles') == null) {
         document.querySelector('#not_articles').remove()
         let table = document.createElement('table')
@@ -313,28 +289,29 @@ document.forms.article.addEventListener('submit', async e => {
 
 
 
-        const article = new Article(tbody, articles, 4)
+        const article = new Article(tbody, articles, numElementes)
         article.createTdTable(tr)
         let articlesRow = document.querySelector('#tbarticles').rows
         article.addEventUpdateArticles(articlesRow)
-        article.addEventDeleteArticles(articlesRow, 3)
+        article.addEventDeleteArticles(articlesRow)
     } else {
 
         let tbody = document.querySelector(`#tbarticles`)
-        deleteElem(tbody)
-        let tr;
-        for (let i = 0; i < articles.length; i++){
-            tbody.append(document.createElement('tr'))
-
-            tr = tbody.lastElementChild
-            createColTable(tr, articles[i])
-        }
+        let article = new Article(tbody, articles, numElementes)
+        article.deleteElem()
+        article.createRowTable()
         let articlesRow = document.querySelector('#tbarticles').rows
-        addEventUpdateArticles(articlesRow, 4)
+        article.addEventUpdateArticles(articlesRow)
     }
 })
 
-// const articlesRow = document.querySelector('#tbarticles').rows
-
-// addEventUpdateArticles(articlesRow, 9)
+if (!document.querySelector('#show_articles') == null) {
+    const articlesRow = document.querySelector('#tbarticles').rows
+    let numElem = {
+        update: 9,
+        delete: 7
+    }
+    let article = new Article(tbody, null, numElem)
+    article.addEventUpdateArticles(articlesRow)
+}
 
