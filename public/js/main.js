@@ -139,17 +139,16 @@ class Article {
     }
 
     changeTable() {
-        document.querySelector('#show_articles').remove()
+
         let articlesDasboard = document.querySelector('.articles_dashboard')
         if (this.data.length == 0) {
-
+            document.querySelector('#show_articles').remove()
             let paragraf = document.createElement('p')
             paragraf.id = 'not_articles'
             paragraf.innerText = 'Нет категорий'
             articlesDasboard.append(paragraf)
         } else {
-            articlesDasboard.lastElementChild.remove()
-            // this.deleteElem()
+            this.deleteElem()
             this.createRowTable()
             this.addEventDeleteArticles(this.tbody.rows)
             this.addEventUpdateArticles(this.tbody.rows)
@@ -308,7 +307,6 @@ document.forms.article.addEventListener('submit', async e => {
 })
 
 if (document.querySelector('#show_articles')) {
-    console.log(document.querySelector('#show_articles'))
     const articlesRow = document.querySelector('#tbarticles').rows
     let numElem = {
         update: 9,
