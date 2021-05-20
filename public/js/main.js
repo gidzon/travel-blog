@@ -317,3 +317,15 @@ if (document.querySelector('#show_articles')) {
     article.addEventDeleteArticles(articlesRow)
 }
 
+const menu = document.querySelector('#menu')
+const categoryBlock = document.querySelector('.categories_dashboard')
+const articleBlock = document.querySelector('.articles_dashboard')
+menu.children[0].children[0].addEventListener('click', () => {
+    categoryBlock.classList.remove('hidden')
+    articleBlock.classList.add('hidden')
+})
+
+menu.children[1].children[0].addEventListener('click', () => {
+    articleBlock.classList.remove('hidden')
+    categoryBlock.classList.add('hidden')
+})
