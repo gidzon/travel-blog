@@ -5,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>admin dashboard</title>
     <link rel="stylesheet" href="../../public/css/main.css">
+    <link rel="stylesheet" href="../../public/css/admin.css">
 </head>
 <body>
+<div class="wrapper">
 <aside>
     <div class="navigation">
-        <ul>
+        <ul id="menu">
             <li><button>Категории</button></li>
             <li><button>Статьи</button></li>
         </ul>
     </div>
 </aside>
 
-<div class="categories_dashboard">
+<div class="categories_dashboard hidden">
     <button id="btn-category">Добавить категорию</button>
     <form action="" method="post" name="category" class="hidden">
         <input type="text" name="name" id="" placeholder="название категории">
@@ -45,7 +47,7 @@
         </table>
     {% endif %}
 </div>
-<div class="articles_dashboard">
+<div class="articles_dashboard show_flex">
     <form action="" method="post" name="article" class="form_update">
         <input type="text" name="title" id="article_tile" placeholder="заголовок">
         <input type="text" name="id_category" id="id_category" placeholder="id категории">
@@ -85,7 +87,8 @@
 
 
 </div>
-<script src="../../public/js/main.js"></script>
+</div>
+<script src="../../public/js/admin.js"></script>
 
 </body>
 </html>
