@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../public/css/main.css">
+    <link rel="stylesheet" href="../public/css/home.css">
     <title>home is twig</title>
 </head>
 <body>
@@ -15,9 +17,10 @@
         <p>not data</p>
     {% else %}
         {% for article in articles %}
+            <img src="../public/img/img.jpg" alt="">
             <p>{{ article.title }}</p>
-            <p>{{ article.content }}</p>
-            <a href="show/{{ article.id }}">читать далее</a>
+            <p>{{ article.subcontent }}</p>
+            <a href="/articles/show/{{ article.id }}">читать далее</a>
         {% endfor %}
     {% endif %}
 </body>
