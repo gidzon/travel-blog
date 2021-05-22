@@ -1,7 +1,16 @@
-.show{
-    display: block;
-}
-
 .hidden{
     display: none;
+}
+
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+ul{
+    list-style-type: none;
+}
+
+.show_flex{
+    display: flex;
 }
