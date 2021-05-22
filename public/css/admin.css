@@ -1,0 +1,173 @@
+body{
+    background-color: #FFE4B5;
+}
+
+.wrapper{
+    display: flex;
+    flex-direction: column;
+}
+
+/*menu*/
+aside{
+    margin-bottom: 60px;
+    background-color: #A9A9A9;
+}
+
+.navigation{
+    display: flex;
+    height: 100px;
+}
+
+li{
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+#menu{
+    display: flex;
+    height: 100px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#menu li > button{
+    font-size: 20px;
+    padding: 10px;
+    color: #FFFAFA;
+    background-color: #6A5ACD;
+}
+
+#menu li > button:hover{
+    cursor: pointer;
+}
+
+/*dashboard*/
+
+.articles_dashboard{
+    flex-direction: column;
+    min-width: 80%;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.articles_dashboard:last-child{
+    margin-bottom: 100px;
+}
+
+#not_articles{
+    font-size: 40px;
+}
+
+#not_articles{
+    text-align: center;
+}
+
+.articles_dashboard input, textarea{
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.articles_dashboard input{
+    height: 80px;
+}
+
+
+.articles_dashboard form{
+    display: flex;
+    flex-direction: column;
+}
+
+.btnSend input {
+    width: 300px;
+    margin-bottom: 100px;
+}
+
+.btnSend input:hover{
+    background-color: chartreuse;
+    color: #FFFAFA;
+}
+
+thead tr, #table-category  tr{
+    background-color: cornflowerblue;
+    color: floralwhite;
+    font-size: 2em;
+}
+
+#table-category button{
+    font-size: 1em;
+    padding: 10px;
+}
+
+#table-category td{
+    text-align: center;
+}
+
+#category_data td{
+    padding: 20px;
+}
+
+
+thead tr td{
+    text-align: center;
+}
+
+td{
+    margin-right: 10px;
+}
+
+#show_articles, #table-category{
+    background-color: #FFFAFA;
+    overflow-x: auto;
+}
+
+
+
+td{
+    padding-bottom: 20px;
+    padding-right: 10px;
+}
+
+
+.categories_dashboard{
+    flex-direction: column;
+}
+
+.categories_dashboard form{
+    margin: 30px auto;
+    display: flex;
+}
+
+.categories_dashboard form input:nth-child(1){
+    height: 50px;
+    text-align: center;
+    width: 500px;
+}
+
+.categories_dashboard form input:nth-child(2){
+    padding: 10px;
+    font-size: 1em;
+    background-color: blue;
+    color: #FFFAFA;
+}
+
+.categories_dashboard form input[type=submit]:hover{
+    background-color: #32CD32;
+    color: #FFFFFF;
+}
+
+.categories_dashboard input{
+    margin-right: 10px;
+}
+#btn-category{
+    width: 150px;
+    height: 50px;
+    align-self: center;
+}
+
+
+@media (max-width: 370px) {
+    .btnSend input{
+        width: 50%;
+    }
+}
