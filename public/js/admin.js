@@ -322,10 +322,14 @@ const categoryBlock = document.querySelector('.categories_dashboard')
 const articleBlock = document.querySelector('.articles_dashboard')
 menu.children[0].children[0].addEventListener('click', () => {
     categoryBlock.classList.remove('hidden')
+    categoryBlock.classList.add('show_flex')
     articleBlock.classList.add('hidden')
+    articleBlock.classList.remove('show_flex')
 })
 
 menu.children[1].children[0].addEventListener('click', () => {
     articleBlock.classList.remove('hidden')
+    articleBlock.classList.add('show_flex')
     categoryBlock.classList.add('hidden')
+    categoryBlock.classList.remove('show_flex')
 })
