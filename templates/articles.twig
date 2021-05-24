@@ -8,20 +8,27 @@
     <title>home is twig</title>
 </head>
 <body>
+<header>
     <ul>
         {% for category in categories %}
             <li><a href="{{ category.id }}" >{{ category.name }}</a></li>
         {% endfor %}
     </ul>
+    <a href="/admin/dashboard/index">админка</a>
+</header>
     {% if articles is empty %}
         <p>not data</p>
     {% else %}
+        <div class="row">
         {% for article in articles %}
-            <img src="../public/img/img.jpg" alt="">
-            <p>{{ article.title }}</p>
-            <p>{{ article.subcontent }}</p>
-            <a href="/articles/show/{{ article.id }}">читать далее</a>
+            <div class="col">
+                <img src="../public/img/img.jpg" alt="">
+                <p>{{ article.title }}</p>
+                <p>{{ article.subcontent }}</p>
+                <a href="/articles/show/{{ article.id }}">читать далее</a>
+            </div>
         {% endfor %}
+        </div>
     {% endif %}
 </body>
 </html>

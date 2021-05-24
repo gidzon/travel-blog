@@ -8,17 +8,21 @@
     <title>home is twig</title>
 </head>
 <body>
+<header>
     <ul>
         {% for category in categories %}
             <li><a href="{{ category.id }}" >{{ category.name }}</a></li>
         {% endfor %}
     </ul>
+</header>
     {% if article is empty %}
-        <p>not data</p>
+        <p>Нет статей</p>
     {% else %}
-        <p>{{ article.title }}</p>
-        <img src="../../public/img/img.jpg" alt="">
-        <p>{{ article.content }}</p>
+        <article>
+            <h2>{{ article.title }}</h2>
+            <img src="../../public/img/img.jpg" alt="">
+            <p>{{ article.content }}</p>
+        </article>
     {% endif %}
 
 
